@@ -1,16 +1,16 @@
 <template>
   <div>
-  <div class="canvases" :style="style">
-    <canvas v-bind="{width, height}" ref="drawer" ></canvas>
-    <canvas-drawer v-bind="{width, height, penWidth, before}" ref="drawer" />
-    <canvas-cursor v-bind="{width, height, penWidth}" ref="cursor" />
-    <div :style="style"
-      @mousemove="move($event.offsetX, $event.offsetY)" @touchmove="touchmove"
-      @mousedown="down($event.offsetX, $event.offsetY)" @touchstart="touchstart"
-      @mouseup="up"     @touchend="up"
-     ></div>
-  </div>
-  <input type="range" v-model="penWidth">
+    <div class="canvases" :style="style">
+      <canvas v-bind="{width, height}" ref="drawer" ></canvas>
+      <canvas-drawer v-bind="{width, height, penWidth, before}" ref="drawer" />
+      <canvas-cursor v-bind="{width, height, penWidth}" ref="cursor" />
+      <div :style="style"
+        @mousemove="move($event.offsetX, $event.offsetY)" @touchmove="touchmove"
+        @mousedown="down($event.offsetX, $event.offsetY)" @touchstart="touchstart"
+        @mouseup="up"     @touchend="up"
+       ></div>
+    </div>
+    <input type="range" v-model="penWidth">
   </div>
 </template>
 <script>
