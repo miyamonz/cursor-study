@@ -12,6 +12,9 @@ export default {
     }
   },
   methods: {
+    clear() {
+      this.context.clearRect(0, 0, this.width, this.height);
+    },
     draw(x, y) {
       const ctx = this.context;
       ctx.beginPath();

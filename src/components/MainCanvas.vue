@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="$refs.drawer.clear()">clear</button>
     <div class="canvases" :style="style">
       <canvas v-bind="{width, height}" ref="drawer" ></canvas>
       <canvas-drawer v-bind="{width, height, penWidth, before}" ref="drawer" />
