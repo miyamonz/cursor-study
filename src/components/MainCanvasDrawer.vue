@@ -1,5 +1,5 @@
 <template>
-  <canvas 
+  <canvas class="drawer"
     :width="width" :height="height" ref="canvas"
     ></canvas>
 </template>
