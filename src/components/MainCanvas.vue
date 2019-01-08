@@ -5,9 +5,9 @@
     <canvas-drawer v-bind="{width, height, penWidth, before}" ref="drawer" />
     <canvas-cursor v-bind="{width, height, penWidth}" ref="cursor" />
     <div :style="style"
-      @mousemove="mousemove"
-      @mousedown="mousedown"
-      @mouseup="mouseup"
+      @mousemove="move($event.offsetX, $event.offsetY)" @touchmove="touchmove"
+      @mousedown="down($event.offsetX, $event.offsetY)" @touchstart="touchstart"
+      @mouseup="up"     @touchend="up"
      ></div>
   </div>
   <input type="range" v-model="penWidth">
@@ -16,6 +16,16 @@
 <script>
 import CanvasCursor from "./MainCanvasCursor.vue";
 import CanvasDrawer from "./MainCanvasDrawer.vue";
+
+const getOffsetFromTouch = touch => {
+  //abs
+  const rect = touch.target.getBoundingClientRect();
+  return {
+    x: touch.clientX - rect.x,
+    y: touch.clientY - rect.y
+  };
+  return rect;
+};
 export default {
   components: { CanvasCursor, CanvasDrawer },
   mounted() {},
@@ -28,16 +38,28 @@ export default {
     }
   },
   methods: {
-    mousemove(e) {
-      const { offsetX: x, offsetY: y } = e;
+    move(x, y) {
       if (this.before) this.draw(x, y);
       this.$refs.cursor.drawCursor(x, y);
     },
-    mousedown(e) {
-      this.$set(this, "before", { x: e.offsetX, y: e.offsetY });
+    down(x, y) {
+      this.$set(this, "before", { x, y });
     },
-    mouseup() {
+    up() {
       this.before = null;
+    },
+    touchstart(e) {
+      const touch = e.changedTouches[0];
+      const { x, y } = getOffsetFromTouch(touch);
+      this.down(x, y);
+    },
+    touchmove(e) {
+      const touch = e.changedTouches[0];
+      const { x, y } = getOffsetFromTouch(touch);
+      this.move(x, y);
+    },
+    mousedown(e) {
+      this.down(e.offsetX, e.offsetY);
     },
     draw(x, y) {
       this.$refs.drawer.draw(x, y);
@@ -46,8 +68,8 @@ export default {
   },
   data() {
     return {
-      width: 400,
-      height: 500,
+      width: 500,
+      height: 600,
       penWidth: 5,
       before: null
     };
